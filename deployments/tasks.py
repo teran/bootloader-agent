@@ -23,16 +23,17 @@ PROFILES_URL = '%sapi/profiles/' % settings.BOOTLOADER_URL
 @app.task
 def deployment_start(deployment):
     r = requests.get(
-    '%s%s' % (DEPLOYMENTS_URL, deployment),
+    '%s%s/' % (DEPLOYMENTS_URL, deployment),
         headers=headers)
     deployment_object = r.json()
 
     r = requests.get(
-        '%s%s' % (PROFILES_URL, deployment_object.get('profile')),
+        '%s%s/' % (PROFILES_URL, deployment_object.get('profile')),
         headers=headers)
     profile_object = r.json()
 
-    fileBase = 'export/file/%s/%s/%s/%s' % (
+    fileBase = '%sexport/file/%s/%s/%s/%s' % (
+        settings.BOOTLOADER_URL,
         deployment,
         deployment_object.get('token'),
         profile_object.get('name'),
@@ -41,7 +42,7 @@ def deployment_start(deployment):
     print fileBase
 
     download_file.apply_async(args=[
-        'http://bootloader:8000/%s/pxelinux' % fileBase,
+        '%s/%s' % (fileBase, 'pxelinux'),
         '/tmp/test'
     ])
 
