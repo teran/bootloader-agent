@@ -18,6 +18,7 @@ headers = {
 }
 
 DEPLOYMENTS_URL = '%sapi/deployments/' % settings.BOOTLOADER_URL
+INTERFACES_URL = '%sapi/interfaces/' % settings.BOOTLOADER_URL
 PROFILES_URL = '%sapi/profiles/' % settings.BOOTLOADER_URL
 
 @app.task
@@ -39,12 +40,16 @@ def deployment_start(deployment):
         profile_object.get('name'),
         profile_object.get('version'))
 
-    print fileBase
-
-    download_file.apply_async(args=[
-        '%s/%s' % (fileBase, 'pxelinux'),
-        '/tmp/test'
-    ])
+    r = requests.get(
+        '%s?server=%s' % (INTERFACES_URL, deployment_object.get('server')),
+        headers=headers
+    )
+    interfaces_object = r.json()
+    for interface in interfaces_object:
+        download_file.apply_async(args=[
+            '%s/%s' % (fileBase, 'pxelinux'),
+            '/tmp/01-%s' % interface.get('mac').replace(':', '-')
+        ])
 
 
 @app.task
