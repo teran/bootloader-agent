@@ -18,7 +18,7 @@ RUN apk --update --no-cache add \
     update-ca-certificates
 
 RUN adduser -SDHh /opt/bootloader/agent -s /bin/sh bootloader
-RUN mkdir -p /var/lib/tftp && \
+RUN mkdir -p /var/lib/tftp/pxelinux.cfg && \
     chown -R bootloader:nogroup /var/lib/tftp
 
 RUN cp /usr/share/syslinux/pxelinux.0 /var/lib/tftp/pxelinux.0 && \
