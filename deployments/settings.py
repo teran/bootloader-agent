@@ -2,7 +2,7 @@ import os
 
 from kombu import Queue
 
-API_TOKEN=os.environ.get('API_TOKEN', 'a27db5e91adeb69b44a51b61600127726573e519')
+API_TOKEN=os.environ.get('API_TOKEN', None)
 
 BOOTLOADER_URL = os.environ.get('BOOTLOADER_URL', 'http://bootloader:8000/')
 

@@ -48,7 +48,7 @@ def deployment_start(deployment):
     for interface in interfaces_object:
         download_file.apply_async(args=[
             '%s/%s' % (fileBase, 'pxelinux'),
-            '/tmp/01-%s' % interface.get('mac').replace(':', '-')
+            '/var/lib/tftp/pxelinux.cfg/01-%s' % interface.get('mac').replace(':', '-')
         ])
 
 
