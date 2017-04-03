@@ -8,6 +8,15 @@ connectivity such as DHCP and in some cases TFTP for faster downloads.
 
 Currently deep-deep alpha state.
 
+Configuration
+=============
+
+Currently there's the way to configure the agent via environment variables:
+
+ * `API_TOKEN` - bootloader-web API access token, default is `None`
+ * `BOOTLOADER_URL` - URL of bootloader-web instance, default is `'http://bootloader:8000/'`
+ * `BROKER_URL` - URL of broker for celery, default is `'amqp://guest:guest@rabbitmq:5672//'`
+
 Licence
 =======
 
