@@ -2,12 +2,13 @@ import os
 
 from kombu import Queue
 
-API_TOKEN=os.environ.get('API_TOKEN', None)
+API_TOKEN = os.environ.get('API_TOKEN', None)
 
 BOOTLOADER_URL = os.environ.get('BOOTLOADER_URL', 'http://bootloader:8000/')
 
 CELERY_SETTINGS = {
-    'BROKER_URL': os.environ.get('BROKER_URL', 'amqp://guest:guest@rabbitmq:5672//'),
+    'BROKER_URL': os.environ.get(
+        'BROKER_URL', 'amqp://guest:guest@rabbitmq:5672//'),
     'CELERY_CREATE_MISSING_QUEUES': True,
     'CELERY_DEFAULT_QUEUE': 'default',
     'CELERY_DEFAULT_EXCHANGE': 'tasks',

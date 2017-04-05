@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-import os
-
 from celery import Celery
 import requests
 
@@ -21,11 +19,11 @@ DEPLOYMENTS_URL = '%sapi/deployments/' % settings.BOOTLOADER_URL
 INTERFACES_URL = '%sapi/interfaces/' % settings.BOOTLOADER_URL
 PROFILES_URL = '%sapi/profiles/' % settings.BOOTLOADER_URL
 
+
 @app.task
 def deployment_start(deployment):
     r = requests.get(
-    '%s%s/' % (DEPLOYMENTS_URL, deployment),
-        headers=headers)
+        '%s%s/' % (DEPLOYMENTS_URL, deployment), headers=headers)
     deployment_object = r.json()
 
     r = requests.get(
@@ -48,7 +46,8 @@ def deployment_start(deployment):
     for interface in interfaces_object:
         download_file.apply_async(args=[
             '%s/%s' % (fileBase, 'pxelinux'),
-            '/var/lib/tftp/pxelinux.cfg/01-%s' % interface.get('mac').replace(':', '-')
+            '/var/lib/tftp/pxelinux.cfg/01-%s' % interface.get(
+                'mac').replace(':', '-')
         ])
 
 
