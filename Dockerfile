@@ -3,14 +3,7 @@ FROM alpine:latest
 RUN apk --update --no-cache add \
       ca-certificates \
       dnsmasq \
-      freetype-dev \
-      g++ \
-      gcc \
-      git \
-      linux-headers \
-      pkgconfig \
       python \
-      python-dev \
       py2-pip \
       syslinux \
       openssl && \
@@ -31,8 +24,24 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 ADD requirements.txt /opt/bootloader/agent/
 
-RUN pip install --no-cache-dir --upgrade -r /opt/bootloader/agent/requirements.txt && \
-    find / -name '*.pyc' -or -name '*.pyo' -delete
+RUN apk add --update --no-cache-dir \
+      freetype-dev \
+      g++ \
+      gcc \
+      git \
+      linux-headers \
+      pkgconfig \
+      python-dev && \
+    pip install --no-cache-dir --upgrade -r /opt/bootloader/agent/requirements.txt && \
+    find / -name '*.pyc' -or -name '*.pyo' -delete && \
+    apk del --update --purge \
+      freetype-dev \
+      g++ \
+      gcc \
+      git \
+      linux-headers \
+      pkgconfig \
+      python-dev
 
 USER bootloader
 
