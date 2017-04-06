@@ -25,3 +25,6 @@ CELERY_SETTINGS = {
             },
     }
 }
+
+LOG_FORMAT = os.environ.get(
+    'LOG_FORMAT', '%(asctime)-15s %(levelname)s %(message)s')

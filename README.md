@@ -18,6 +18,7 @@ Currently there's the way to configure the agent via environment variables:
  * `API_TOKEN` - bootloader-web API access token, default is `None`
  * `BOOTLOADER_URL` - URL of bootloader-web instance, default is `'http://bootloader:8000/'`
  * `BROKER_URL` - URL of broker for celery, default is `'amqp://guest:guest@rabbitmq:5672//'`
+ * `LOG_FORMAT` - log record format string. [As Python template](https://docs.python.org/dev/library/logging.html#logrecord-attributes)
 
 Licence
 =======

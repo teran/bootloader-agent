@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import logging as logger
+import sys
+
 from celery import Celery
 import requests
 
@@ -7,6 +10,12 @@ import settings
 
 app = Celery('tasks')
 app.conf.update(**settings.CELERY_SETTINGS)
+
+logger.basicConfig(format=settings.LOG_FORMAT)
+
+if settings.API_TOKEN is None:
+    logger.critical("No API token specified. Please refer to documentation")
+    sys.exit(1)
 
 headers = {
     'User-Agent': 'Bootloader-Agent/0.1',
