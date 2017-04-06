@@ -24,7 +24,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 ADD requirements.txt /opt/bootloader/agent/
 
-RUN apk add --update --no-cache-dir \
+RUN apk add --update --no-cache \
       freetype-dev \
       g++ \
       gcc \
@@ -34,7 +34,7 @@ RUN apk add --update --no-cache-dir \
       python-dev && \
     pip install --no-cache-dir --upgrade -r /opt/bootloader/agent/requirements.txt && \
     find / -name '*.pyc' -or -name '*.pyo' -delete && \
-    apk del --update --purge \
+    apk del --update --purge --no-cache \
       freetype-dev \
       g++ \
       gcc \
