@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import logging as logger
+import os
 import sys
 
 from celery import Celery
@@ -53,11 +54,11 @@ def deployment_start(deployment):
     )
     interfaces_object = r.json()
     for interface in interfaces_object:
-        download_file.apply_async(args=[
-            '%s/%s' % (fileBase, 'pxelinux'),
-            '/var/lib/tftp/pxelinux.cfg/01-%s' % interface.get(
-                'mac').replace(':', '-')
-        ])
+        download_file.apply_async(
+            args=[
+                '%s/%s' % (fileBase, 'pxelinux'),
+                '/var/lib/tftp/pxelinux.cfg/01-%s' % interface.get(
+                    'mac').replace(':', '-')])
 
 
 @app.task
@@ -68,3 +69,8 @@ def download_file(URL, target):
         if chunk:
             fp.write(chunk)
     fp.close()
+
+
+@app.task
+def delete_file(target):
+    os.unlink(target)
