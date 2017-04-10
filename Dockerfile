@@ -43,8 +43,7 @@ RUN apk add --update --no-cache \
       pkgconfig \
       python-dev
 
-USER bootloader
-
 ADD deployments /opt/bootloader/agent/deployments
+ADD entrypoint.sh /entrypoint.sh
 
-ENTRYPOINT ["celery", "-A", "deployments.tasks", "worker"]
+ENTRYPOINT ["/entrypoint.sh"]
