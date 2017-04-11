@@ -8,6 +8,9 @@ set -e
   echo "No API token specified" && exit 1
 
 RUN_TFTP=${RUN_TFTP:=false}
+RUN_DHCP=${RUN_DHCP:=false}
+RUN_HTTP=${RUN_HTTP:=false}
+
 DHCP_BOOT_FILENAME=${DHCP_BOOT_FILENAME:=lpxelinux.0}
 
 DNSMASQ_CMD="/usr/sbin/dnsmasq"
@@ -30,8 +33,13 @@ fi
 
 DNSMASQ_CMD="${DNSMASQ_CMD} ${DNSMASQ_OPTS}"
 
-if [[ "${RUN_TFTP}" == "true" ]] || [[ -n "${RUN_DHCP}" ]] ; then
+if [[ "${RUN_TFTP}" == "true" ]] || [[ "${RUN_DHCP}" == "true" ]] ; then
   $DNSMASQ_CMD
+fi
+
+if [[ "${RUN_HTTP}" == "true" ]] ; then
+  mkdir -p /run/nginx
+  nginx -t && nginx
 fi
 
 /bin/su -c "/usr/bin/celery -A deployments.tasks worker -Q ${QUEUE}" bootloader

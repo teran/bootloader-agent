@@ -1,14 +1,21 @@
 FROM alpine:latest
 
+EXPOSE 67/udp
+EXPOSE 69/udp
+EXPOSE 80
+
 RUN apk --update --no-cache add \
       ca-certificates \
       dnsmasq \
+      nginx \
       python \
       py2-pip \
       syslinux \
       openssl && \
     rm -vf /var/cache/apk/* && \
     update-ca-certificates
+
+ADD nginx.conf /etc/nginx/nginx.conf
 
 RUN adduser -SDHh /opt/bootloader/agent -s /bin/sh bootloader
 RUN mkdir -p /var/lib/tftp/pxelinux.cfg && \
