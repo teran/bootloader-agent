@@ -37,7 +37,7 @@ Run example
 ===========
 
 ```
-docker run -it --priveleged --network=host \
+docker run -it --cap-add NET_ADMIN --network=host \
   -e API_TOKEN=<bootloader_api_token> \
   -e BOOTLOADER_URL=http://bootloader.example.org/ \
   -e DHCP_NETMASK=255.255.255.0 \
