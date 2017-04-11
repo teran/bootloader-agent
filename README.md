@@ -18,7 +18,7 @@ Currently there's the way to configure the agent via environment variables:
  * `API_TOKEN` - bootloader-web API access token, default is `None`
  * `BOOTLOADER_URL` - URL of bootloader-web instance, default is `'http://bootloader:8000/'`
  * `BROKER_URL` - URL of broker for celery, default is `'amqp://guest:guest@rabbitmq:5672//'`
- * `DHCP_BOOT_FILENAME` - filename to use for PXE boot. Builtin files are: `pxelinux.0`, `lpxelinux.0`
+ * `DHCP_BOOT_FILENAME` - filename to use for PXE boot. Builtin files are: `pxelinux.0`, `lpxelinux.0` - default
  * `DHCP_NETMASK` - netmask in IP form to serve by DHCP, example: `255.255.255.0`
  * `DHCP_RANGE` - `<range_start>,<range_end>,<lease_duration>` formated string
  * `DHCP_ROUTER` - network router to serve by DHCP, example: `10.0.30.254`
