@@ -16,9 +16,16 @@ if [[ "${RUN_TFTP}" == "true" ]] ; then
   DNSMASQ_CMD="${DNSMASQ_CMD} --enable-tftp --tftp-root=/var/lib/tftp"
 fi
 
-if [[ -n "${RUN_DHCP}" ]] ; then
-  DNSMASQ_CMD="${DNSMASQ_CMD} --dhcp-range=${RUN_DHCP} --dhcp-boot=${DHCP_BOOT_FILENAME}"
-  DNSMASQ_CMD="${DNSMASQ_CMD} --dhcp-option=vendor:PXEClient,6,2b --dhcp-no-override"
+if [[ "${RUN_DHCP}" == "true" ]] ; then
+  [[ -z "${DHCP_RANGE}" ]] && \
+    echo "No DHCP_RANGE specified" && exit 1
+  [[ -z "${DHCP_NETMASK}" ]] && \
+    echo "No DHCP_NETMASK specified" && exit 1
+  [[ -z "${DHCP_ROUTER}" ]] && \
+    echo "No DHCP_ROUTER specified" && exit 1
+
+  DNSMASQ_CMD="${DNSMASQ_CMD} --dhcp-range=${DHCP_RANGE} --dhcp-option=option:netmask,${DHCP_NETMASK}"
+  DNSMASQ_CMD="${DNSMASQ_CMD} --dhcp-option=option:router,${DHCP_ROUTER} --dhcp-boot=${DHCP_BOOT_FILENAME}"
 fi
 
 DNSMASQ_CMD="${DNSMASQ_CMD} ${DNSMASQ_OPTS}"
