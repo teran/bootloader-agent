@@ -46,6 +46,7 @@ docker run -it --cap-add NET_ADMIN --network=host \
   -e DNSMASQ_OPTS='--dhcp-option=option:ntp-server,192.168.0.254' \
   -e QUEUE=deployment-1-mylocationname \
   -e RUN_DHCP=true \
+  -e RUN_HTTP=true \
   -e RUN_TFTP=true \
     teran/bootloader-agent
 ```
