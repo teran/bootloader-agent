@@ -5,15 +5,14 @@ import os
 import sys
 
 from celery import Celery
-import requests
 
+import api
 import settings
 
 if settings.API_TOKEN is None:
     logger.critical("No API token specified. Please refer to documentation")
     sys.exit(1)
 
-import api
 
 app = Celery('tasks')
 app.conf.update(**settings.CELERY_SETTINGS)
@@ -23,14 +22,10 @@ logger.basicConfig(format=settings.LOG_FORMAT)
 
 @app.task
 def deployment_start(deployment):
-    r = requests.get(
-        '%s%s/' % (api.DEPLOYMENTS_URL, deployment), headers=api.headers)
-    deployment_object = r.json()
-
-    r = requests.get(
-        '%s%s/' % (api.PROFILES_URL, deployment_object.get('profile')),
-        headers=api.headers)
-    profile_object = r.json()
+    deployment_object = api.get_deployment(
+        deployment_id=deployment)
+    profile_object = api.get_profile(
+        profile_id=deployment_object.get('profile'))
 
     fileBase = '%sexport/file/%s/%s/%s/%s' % (
         settings.BOOTLOADER_URL,
@@ -39,11 +34,8 @@ def deployment_start(deployment):
         profile_object.get('name'),
         profile_object.get('version'))
 
-    r = requests.get(
-        '%s?server=%s' % (api.INTERFACES_URL, deployment_object.get('server')),
-        headers=api.headers
-    )
-    interfaces_object = r.json()
+    interfaces_object = api.get_interfaces_by_server(
+        profile_object.get('server'))
     for interface in interfaces_object:
         download_file.apply_async(
             args=[
