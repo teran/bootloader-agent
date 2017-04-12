@@ -2,16 +2,11 @@
 
 import logging as logger
 import os
-import sys
 
 from celery import Celery
 
 import api
 import settings
-
-if settings.API_TOKEN is None:
-    logger.critical("No API token specified. Please refer to documentation")
-    sys.exit(1)
 
 
 app = Celery('tasks')
