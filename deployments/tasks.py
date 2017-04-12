@@ -35,7 +35,7 @@ def deployment_start(deployment):
         profile_object.get('version'))
 
     interfaces_object = api.get_interfaces_by_server(
-        profile_object.get('server'))
+        deployment_object.get('server'))
     for interface in interfaces_object:
         download_file.apply_async(
             args=[
