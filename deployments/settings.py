@@ -4,7 +4,7 @@ from kombu import Queue
 
 API_TOKEN = os.environ.get('API_TOKEN')
 
-BOOTLOADER_URL = os.environ.get('BOOTLOADER_URL', 'http://bootloader:8000/')
+BOOTLOADER_URL = os.environ.get('BOOTLOADER_URL', 'http://bootloader/')
 
 USE_QUEUE = os.environ.get('QUEUE')
 
