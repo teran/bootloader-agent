@@ -9,10 +9,12 @@ headers = {
     'Accepts': 'application/json',
 }
 
-DEPLOYMENTS_URL = '%sapi/deployments/' % settings.BOOTLOADER_URL
-INTERFACES_URL = '%sapi/interfaces/' % settings.BOOTLOADER_URL
-PROFILES_URL = '%sapi/profiles/' % settings.BOOTLOADER_URL
-USERS_URL = '%sapi/users/' % settings.BOOTLOADER_URL
+API_URL = '%sapi/v1alpha1' % (settings.BOOTLOADER_URL)
+
+DEPLOYMENTS_URL = '%s/deployments/' % (API_URL)
+INTERFACES_URL = '%s/interfaces/' % (API_URL)
+PROFILES_URL = '%s/profiles/' % (API_URL)
+USERS_URL = '%s/users/' % (API_URL)
 
 
 def download_file(URL, target):
