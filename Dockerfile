@@ -19,8 +19,10 @@ RUN apk --update --no-cache add \
 
 ADD nginx.conf /etc/nginx/nginx.conf
 
-RUN adduser -SDHh /opt/bootloader/agent -s /bin/sh bootloader
-RUN mkdir -p /var/lib/tftp/pxelinux.cfg && \
+RUN mkdir -p \
+      /var/lib/tftp \
+      /var/lib/tftp/pxelinux.cfg \
+      /var/lib/http && \
     chown -R bootloader:nogroup /var/lib/tftp
 
 RUN cp /usr/share/syslinux/pxelinux.0 /var/lib/tftp/pxelinux.0 && \
