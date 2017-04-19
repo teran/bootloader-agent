@@ -16,13 +16,10 @@ RUN apk --update --no-cache add \
     rm -vf /var/cache/apk/* && \
     update-ca-certificates
 
-ADD nginx.conf /etc/nginx/nginx.conf
-
 RUN mkdir -p \
-      /var/lib/tftp \
       /var/lib/tftp/pxelinux.cfg \
       /var/lib/http && \
-    chown -R bootloader:nogroup /var/lib/tftp
+    chown -R bootloader:nogroup /var/lib/tftp /var/lib/http
 
 RUN apk add --update --no-cache syslinux && \
     cp /usr/share/syslinux/pxelinux.0 /var/lib/tftp/pxelinux.0 && \
@@ -57,6 +54,8 @@ RUN apk add --update --no-cache \
       linux-headers \
       pkgconfig \
       python-dev
+
+ADD nginx.conf /etc/nginx/nginx.conf
 
 ADD deployments /opt/bootloader/agent/deployments
 ADD entrypoint.sh /entrypoint.sh
