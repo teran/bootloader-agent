@@ -4,6 +4,8 @@ EXPOSE 67/udp
 EXPOSE 69/udp
 EXPOSE 80
 
+RUN adduser -SDHh /opt/bootloader/agent -s /bin/sh bootloader
+
 RUN apk --update --no-cache add \
       ca-certificates \
       dnsmasq \

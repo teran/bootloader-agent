@@ -42,4 +42,9 @@ if [[ "${RUN_HTTP}" == "true" ]] ; then
   nginx -t && nginx
 fi
 
-/bin/su -c "/usr/bin/celery -A deployments.tasks worker -Q ${QUEUE}" bootloader
+/usr/bin/celery worker \
+  --app deployments.tasks \
+  --queues ${QUEUE} \
+  --task-events \
+  --uid 100 \
+  --gid 65533
