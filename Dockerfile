@@ -12,7 +12,6 @@ RUN apk --update --no-cache add \
       nginx \
       python \
       py2-pip \
-      syslinux \
       openssl && \
     rm -vf /var/cache/apk/* && \
     update-ca-certificates
@@ -25,8 +24,13 @@ RUN mkdir -p \
       /var/lib/http && \
     chown -R bootloader:nogroup /var/lib/tftp
 
-RUN cp /usr/share/syslinux/pxelinux.0 /var/lib/tftp/pxelinux.0 && \
-    cp /usr/share/syslinux/lpxelinux.0 /var/lib/tftp/lpxelinux.0
+RUN apk add --update --no-cache syslinux && \
+    cp /usr/share/syslinux/pxelinux.0 /var/lib/tftp/pxelinux.0 && \
+    cp /usr/share/syslinux/lpxelinux.0 /var/lib/tftp/lpxelinux.0 && \
+    cp /usr/share/syslinux/ldlinux.c32 /var/lib/tftp/ldlinux.c32 && \
+    apk del --update --purge --no-cache syslinux && \
+    rm -f /var/cache/apk/*
+
 
 WORKDIR "/opt/bootloader/agent"
 
