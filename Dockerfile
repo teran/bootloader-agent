@@ -57,7 +57,7 @@ RUN apk add --update --no-cache \
 
 ADD nginx.conf /etc/nginx/nginx.conf
 
-ADD deployments /opt/bootloader/agent/deployments
 ADD entrypoint.sh /entrypoint.sh
-
 ENTRYPOINT ["/entrypoint.sh"]
+
+ADD deployments /opt/bootloader/agent/deployments
