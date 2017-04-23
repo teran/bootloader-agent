@@ -57,10 +57,10 @@ RUN apk add --update --no-cache \
 
 RUN mkdir -p /var/lib/bootloader/callback
 
-ADD nginx.conf /etc/nginx/nginx.conf
-ADD uwsgi.yaml /etc/bootloader/uwsgi.yaml
+ADD docker/nginx.conf /etc/nginx/nginx.conf
+ADD docker/uwsgi.yaml /etc/bootloader/uwsgi.yaml
 
-ADD entrypoint.sh /entrypoint.sh
+ADD docker/entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 ADD deployments /opt/bootloader/agent/deployments
