@@ -1,0 +1,10 @@
+uwsgi:
+  plugins: python
+  uid: nobody
+  gid: nogroup
+  socket: 127.0.0.1:8000
+  chdir: /opt/bootloader/agent
+  module: deployments.callback:app
+  master: True
+  vacuum: True
+  max-requests: 5000

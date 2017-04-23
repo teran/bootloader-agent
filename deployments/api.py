@@ -1,3 +1,4 @@
+import json
 import requests
 
 import settings
@@ -50,5 +51,6 @@ def get_profile(profile_id):
         '%s%s/' % (PROFILES_URL, profile_id),
         headers=headers)
     profile_object = r.json()
+    profile = json.loads(profile_object.get('profile'))
 
-    return profile_object
+    return profile

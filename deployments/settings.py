@@ -8,23 +8,33 @@ BOOTLOADER_URL = os.environ.get('BOOTLOADER_URL', 'http://bootloader/')
 
 USE_QUEUE = os.environ.get('QUEUE')
 
+CALLBACK_DIR = '/var/lib/bootloader/callback'
+
 CELERY_SETTINGS = {
     'BROKER_URL': os.environ.get(
         'BROKER_URL', 'amqp://guest:guest@rabbitmq:5672//'),
+    'CELERY_ACCEPT_CONTENT': ['json'],
     'CELERY_CREATE_MISSING_QUEUES': True,
     'CELERY_DEFAULT_QUEUE': USE_QUEUE,
     'CELERY_DEFAULT_EXCHANGE': 'tasks',
     'CELERY_DEFAULT_EXCHANGE_TYPE': 'topic',
     'CELERY_DEFAULT_ROUTING_KEY': 'task.default',
+    'CELERY_IMPORTS': (
+        'deployments.tasks',
+        'deployments.tasks.AgentTasks',
+    ),
     'CELERY_QUEUES': (
         Queue(USE_QUEUE, routing_key='deployment.#'),
     ),
+    'CELERY_RESULT_BACKEND': 'rpc://',
+    'CELERY_RESULT_SERIALIZER': 'json',
     'CELERY_ROUTES': {
             'tasks.deployment_start': {
                 'queue': 'deployment',
                 'routing_key': 'deployment_start',
             },
-    }
+    },
+    'CELERY_TASK_SERIALIZER': 'json',
 }
 
 LOG_FORMAT = os.environ.get(

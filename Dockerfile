@@ -55,7 +55,10 @@ RUN apk add --update --no-cache \
       pkgconfig \
       python-dev
 
+RUN mkdir -p /var/lib/bootloader/callback
+
 ADD nginx.conf /etc/nginx/nginx.conf
+ADD uwsgi.yaml /etc/bootloader/uwsgi.yaml
 
 ADD entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
