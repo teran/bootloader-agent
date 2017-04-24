@@ -19,7 +19,12 @@ def callback(token, name):
         str(token),
         str(name))
 
-    os.makedirs(os.path.dirname(path))
+    try:
+        os.makedirs(os.path.dirname(path))
+    except OSError as e:
+        if e.message == 'File exists':
+            pass
+
     if not os.path.exists(path):
         open(path, 'w').close()
 

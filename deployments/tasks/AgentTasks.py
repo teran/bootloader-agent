@@ -1,68 +1,23 @@
-import os
-import time
-
-from deployments import api
-from deployments import settings
 from deployments.tasks import app
+from deployments.workflow import Workflow
 
 
 @app.task
-def download_file(deployment, source, destination):
-    print('download_file evaluating for %s: %s --> %s' % (
-        deployment, source, destination))
-    import requests
+def evaluate(deloyment, pipeline):
+    """
+    pipeline = [
+        {
+            'action': 'download_file'
+            'deployment': 11111,
+            'source': 'http://....../kernel'
+            'destination': '/var/lib/tftp/blah'
+        }
+    ]
+    """
 
-    r = requests.get(source)
+    w = Workflow(pipeline=pipeline)
 
-    try:
-        os.makedirs(os.path.dirname(destination))
-    except OSError as e:
-        if e.message == 'File exists':
-            pass
-
-    with open(destination, 'w') as fp:
-        for chunk in r.iter_content(chunk_size=1024):
-            if chunk:
-                fp.write(chunk)
-    return True
-
-
-@app.task
-def delete_file(deployment, filename):
-    print('delete_file on %s is not implemented yet')
-
-    return True
-
-
-@app.task
-def echo(message):
-    print('Echo: %s' % (message))
-
-
-@app.task(bind=True)
-def expect_callback(self, deployment, callback_name):
-    print('expect_callback evaluating for %s: %s' % (
-        deployment, callback_name))
-    import os
-
-    d = api.get_deployment(deployment)
-
-    path = os.path.join(
-        str(settings.CALLBACK_DIR),
-        str(d['token']),
-        str(callback_name))
-
-    print('expect_callback on %s' % path)
-
-    while not os.path.exists(path):
-        print('Callback %s is not ready yet, waiting 30 secs' % path)
-        time.sleep(30)
-
-    print('Callback found: %s' % path)
-
-
-@app.task
-def ipmi_command(deployment, command):
-    print('ipmi_command evaluating for %s: %s' % (deployment, command))
-
-    return True
+    for step in pipeline:
+        action = step['action']
+        del(step['action'])
+        getattr(w, action)(**step)
