@@ -14,6 +14,7 @@ RUN apk --update --no-cache add \
       py2-pip \
       openssl && \
     rm -vf /var/cache/apk/* && \
+    pip install --no-cache-dir --upgrade pip && \
     update-ca-certificates
 
 RUN mkdir -p \
