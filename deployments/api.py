@@ -12,10 +12,11 @@ headers = {
 
 API_URL = '%sapi/v1alpha1' % (settings.BOOTLOADER_URL)
 
-DEPLOYMENTS_URL = '%s/deployments/' % (API_URL)
-INTERFACES_URL = '%s/interfaces/' % (API_URL)
-PROFILES_URL = '%s/profiles/' % (API_URL)
-USERS_URL = '%s/users/' % (API_URL)
+DEPLOYMENTS_URL = '%s/deployments/' % (API_URL,)
+INTERFACES_URL = '%s/interfaces/' % (API_URL,)
+PROFILES_URL = '%s/profiles/' % (API_URL,)
+SERVERS_URL = '%s/servers/' % (API_URL,)
+USERS_URL = '%s/users/' % (API_URL,)
 
 
 def download_file(URL, target):
@@ -54,3 +55,13 @@ def get_profile(profile_id):
     profile = json.loads(profile_object.get('profile'))
 
     return profile
+
+
+def get_server(fqdn):
+    r = requests.get(
+        '%s?fqdn=%s' % (SERVERS_URL, fqdn),
+        headers=headers)
+
+    server_object = r.json()[0]
+
+    return server_object

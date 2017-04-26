@@ -1,4 +1,5 @@
 git+https://github.com/celery/celery.git@master
 Flask
+pyghmi
 requests
 uwsgi
