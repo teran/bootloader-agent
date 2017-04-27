@@ -18,6 +18,14 @@ def evaluate(deloyment, pipeline):
     w = Workflow(pipeline=pipeline)
 
     for step in pipeline:
-        action = step['action']
-        del(step['action'])
-        getattr(w, action)(**step)
+        if type(step) == type({}):
+            action = step['action']
+            del(step['action'])
+
+            getattr(w, action)(**step)
+        elif type(step) in (type([]), type(()),):
+            for substep in step:
+                action = substep['action']
+                del(substep['action'])
+
+                getattr(w, action)(**substep)
