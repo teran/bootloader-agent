@@ -18,7 +18,7 @@ def evaluate(deloyment, pipeline):
     w = Workflow(pipeline=pipeline)
 
     for step in pipeline:
-        if type(step) == type({}):
+        if isinstance(type(step), type({})):
             action = step['action']
             del(step['action'])
 
