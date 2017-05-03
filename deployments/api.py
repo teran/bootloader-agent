@@ -12,6 +12,7 @@ headers = {
 
 API_URL = '%sapi/v1alpha1' % (settings.BOOTLOADER_URL)
 
+CREDENTIALS_URL = '%s/credentials/' % (API_URL,)
 DEPLOYMENTS_URL = '%s/deployments/' % (API_URL,)
 INTERFACES_URL = '%s/interfaces/' % (API_URL,)
 PROFILES_URL = '%s/profiles/' % (API_URL,)
@@ -26,6 +27,20 @@ def download_file(URL, target):
         if chunk:
             fp.write(chunk)
     fp.close()
+
+
+def get_credential(deployment_id, name):
+    deployment = get_deployment(deployment_id)
+    server = get_server(deployment['server'])
+
+    credentials = requests.get(
+        '%s?object=server&object_id=%s&name=%s' % (
+            CREDENTIALS_URL, server['id'], name,),
+        headers=headers
+    ).json()
+
+    print(credentials)
+    return credentials[0]
 
 
 def get_deployment(deployment_id):

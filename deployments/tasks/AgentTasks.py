@@ -64,6 +64,9 @@ def ipmi_command(deployment, command, parameters=None):
     d = api.get_deployment(deployment)
     s = api.get_server(d['server'])
 
+    ipmi_username = api.get_credential(d['id'], 'ipmi_username')['data']
+    ipmi_password = api.get_credential(d['id'], 'ipmi_password')['data']
+
     def docommand(result, ipmisession):
         print("IPMI sesssion established to %s" % (ipmisession.bmc,))
 
@@ -94,7 +97,7 @@ def ipmi_command(deployment, command, parameters=None):
 
     ipmicmd = command.Command(
         bmc=s['ipmi_host'],
-        userid=s['ipmi_username'],
-        password=s['ipmi_password'],
+        userid=ipmi_username,
+        password=ipmi_password,
         onlogon=docommand)
     ipmicmd.eventloop()
