@@ -1,7 +1,8 @@
 # Bootloader-Agent
 
 [![Build Status](https://travis-ci.org/teran/bootloader-agent.svg?branch=master)](https://travis-ci.org/teran/bootloader-agent)
-![Layers size](https://images.microbadger.com/badges/image/teran/bootloader-agent.svg)
+[![Layers size](https://images.microbadger.com/badges/image/teran/bootloader-agent.svg)](https://hub.docker.com/r/teran/bootloader-agent/)
+![Recent build commit](https://images.microbadger.com/badges/commit/teran/bootloader-agent.svg)
 [![Docker Automated build](https://img.shields.io/docker/automated/teran/bootloader-agent.svg)](https://hub.docker.com/r/teran/bootloader-agent/)
 ![License](https://img.shields.io/github/license/teran/bootloader-agent.svg)
 
