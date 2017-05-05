@@ -62,7 +62,7 @@ def ipmi_command(deployment, command, parameters=None):
     from pyghmi.ipmi import command
 
     d = api.get_deployment(deployment)
-    s = api.get_server(d['server'])
+    s = api.get_server_by_fqdn(d['server'])
 
     ipmi_username = api.get_credential(d['id'], 'ipmi_username')['data']
     ipmi_password = api.get_credential(d['id'], 'ipmi_password')['data']

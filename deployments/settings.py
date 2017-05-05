@@ -6,6 +6,8 @@ API_TOKEN = os.environ.get('API_TOKEN')
 
 BOOTLOADER_URL = os.environ.get('BOOTLOADER_URL', 'http://bootloader/')
 
+API_VERSION = 'v1alpha1'
+
 USE_QUEUE = os.environ.get('QUEUE')
 
 CALLBACK_DIR = '/var/lib/bootloader/callback'

@@ -1,7 +1,9 @@
-import json
 import requests
 
+from furl import furl
+
 import settings
+
 
 headers = {
     'User-Agent': 'Bootloader-Agent/0.1',
@@ -10,14 +12,49 @@ headers = {
     'Accepts': 'application/json',
 }
 
-API_URL = '%sapi/v1alpha1' % (settings.BOOTLOADER_URL)
 
-CREDENTIALS_URL = '%s/credentials/' % (API_URL,)
-DEPLOYMENTS_URL = '%s/deployments/' % (API_URL,)
-INTERFACES_URL = '%s/interfaces/' % (API_URL,)
-PROFILES_URL = '%s/profiles/' % (API_URL,)
-SERVERS_URL = '%s/servers/' % (API_URL,)
-USERS_URL = '%s/users/' % (API_URL,)
+def _api_request(
+        object_name,
+        object_id=None,
+        query={},
+        method='get',
+        data=None):
+    name = object_name+'s'
+    API_URL = furl(
+        settings.BOOTLOADER_URL).add(
+            path='api').add(path=settings.API_VERSION).url
+    handlers = requests.get(API_URL, headers=headers).json()
+
+    if name in handlers:
+        handler_url = handlers[name]
+    else:
+        raise ValueError("No such handler available in API")
+
+    url = handler_url
+    if object_id is not None and isinstance(object_id, int):
+        url = furl(url).add(path='/%s/' % (object_id,)).url
+    if len(query) > 0:
+        url = furl(url).add(query).url
+
+    obj = None
+    if method == 'delete':
+        obj = requests.delete(url, headers=headers)
+    elif method == 'get':
+        obj = requests.get(url, headers=headers)
+    elif method == 'post':
+        obj = requests.post(url, headers=headers, data=data)
+    elif method == 'put':
+        obj = requests.put(url, headers=headers, data=data)
+    else:
+        raise ValueError("Method %s is not supported in _api_request()" % (
+            method,))
+
+    if obj.status_code not in (200, 201, 204):
+        raise ApiQueryError(
+            'Attempt to query %s is done with %s status code' % (
+                object_name, obj.status_code,))
+
+    return obj.json()
 
 
 def download_file(URL, target):
@@ -31,52 +68,48 @@ def download_file(URL, target):
 
 def get_credential(deployment_id, name):
     deployment = get_deployment(deployment_id)
-    server = get_server(deployment['server'])
+    server = get_server_by_fqdn(deployment['server'])
 
-    credentials = requests.get(
-        '%s?object=server&object_id=%s&name=%s' % (
-            CREDENTIALS_URL, server['id'], name,),
-        headers=headers
-    ).json()
+    obj = _api_request(
+        object_name='credential',
+        query={
+            'object': 'server',
+            'object_id': server['id'],
+            'name': name,
+        })
 
-    print(credentials)
-    return credentials[0]
+    return obj[0]
 
 
 def get_deployment(deployment_id):
-    r = requests.get(
-        '%s%s/' % (DEPLOYMENTS_URL, deployment_id),
-        headers=headers)
-    deployment_object = r.json()
+    obj = _api_request(object_name='deployment', object_id=deployment_id)
 
-    return deployment_object
+    return obj
 
 
 def get_interfaces_by_server(server):
-    r = requests.get(
-        '%s?server=%s' % (INTERFACES_URL, server),
-        headers=headers
-    )
-    interfaces_object = r.json()
+    obj = _api_request(object_name='interface', query={'server': server})
 
-    return interfaces_object
+    return obj
 
 
 def get_profile(profile_id):
-    r = requests.get(
-        '%s%s/' % (PROFILES_URL, profile_id),
-        headers=headers)
-    profile_object = r.json()
-    profile = json.loads(profile_object.get('profile'))
+    obj = _api_request(object_name='profile', object_id=profile_id)
 
-    return profile
+    return obj['profile']
 
 
-def get_server(fqdn):
-    r = requests.get(
-        '%s?fqdn=%s' % (SERVERS_URL, fqdn),
-        headers=headers)
+def get_server_by_fqdn(fqdn):
+    obj = _api_request(object_name='server', query={'fqdn': fqdn})
 
-    server_object = r.json()[0]
+    return obj[0]
 
-    return server_object
+
+def get_server(server_id):
+    obj = _api_request(object_name='server', object_id=server_id)
+
+    return obj
+
+
+class ApiQueryError(Exception):
+    pass
