@@ -25,7 +25,7 @@ def _api_request(
             path='api').add(path=settings.API_VERSION).url
     handlers = requests.get(API_URL, headers=headers).json()
 
-    if name in handlers:
+    if name in handlers.keys():
         handler_url = handlers[name]
     else:
         raise ValueError("No such handler available in API")
