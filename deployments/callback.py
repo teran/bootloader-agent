@@ -2,7 +2,10 @@ import os
 from flask import Flask
 
 from deployments import settings
+from deployments import api
 
+
+api.register_agent()
 
 app = Flask(__name__)
 

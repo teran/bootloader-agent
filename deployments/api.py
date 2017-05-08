@@ -1,7 +1,6 @@
-import requests
-
 from furl import furl
-
+import json
+import requests
 import settings
 
 
@@ -42,9 +41,9 @@ def _api_request(
     elif method == 'get':
         obj = requests.get(url, headers=headers)
     elif method == 'post':
-        obj = requests.post(url, headers=headers, data=data)
+        obj = requests.post(url, headers=headers, data=json.dumps(data))
     elif method == 'put':
-        obj = requests.put(url, headers=headers, data=data)
+        obj = requests.put(url, headers=headers, data=json.dumps(data))
     else:
         raise ValueError("Method %s is not supported in _api_request()" % (
             method,))
@@ -93,6 +92,12 @@ def get_interfaces_by_server(server):
     return obj
 
 
+def get_location_by_id(location_id):
+    obj = _api_request(object_name='location', object_id=location_id)
+
+    return obj
+
+
 def get_profile(profile_id):
     obj = _api_request(object_name='profile', object_id=profile_id)
 
@@ -109,6 +114,16 @@ def get_server(server_id):
     obj = _api_request(object_name='server', object_id=server_id)
 
     return obj
+
+
+def register_agent():
+    _api_request(
+        object_name='agent',
+        method='post',
+        data={
+            'agent_url': settings.AGENT_URL,
+            'queue': settings.USE_QUEUE
+        })
 
 
 class ApiQueryError(Exception):

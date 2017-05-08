@@ -2,6 +2,8 @@
 
 set -e
 
+[[ -z "${AGENT_URL}" ]] && \
+  echo "No agent URL specified" && exit 1
 [[ -z "${QUEUE}" ]] && \
   echo "No queue specified" && exit 1
 [[ -z "${API_TOKEN}" ]] && \

@@ -2,6 +2,8 @@ import os
 
 from kombu import Queue
 
+AGENT_URL = os.environ.get('AGENT_URL')
+
 API_TOKEN = os.environ.get('API_TOKEN')
 
 BOOTLOADER_URL = os.environ.get('BOOTLOADER_URL', 'http://bootloader/')
