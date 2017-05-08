@@ -57,12 +57,13 @@ def expect_callback(deployment, callback_name):
 
 @app.task
 def ipmi_command(deployment, command, parameters=None):
-    print('ipmi_command evaluating for %s: %s' % (deployment, command))
-
-    from pyghmi.ipmi import command
+    from pyghmi.ipmi.command import Command
 
     d = api.get_deployment(deployment)
     s = api.get_server_by_fqdn(d['server'])
+
+    print('ipmi_command evaluating for %s: command=%s parameters=%s' % (
+        deployment, command, parameters))
 
     ipmi_username = api.get_credential(d['id'], 'ipmi_username')['data']
     ipmi_password = api.get_credential(d['id'], 'ipmi_password')['data']
@@ -95,7 +96,7 @@ def ipmi_command(deployment, command, parameters=None):
         elif command == 'sensors':
             print(ipmisession.get_sensor_data())
 
-    ipmicmd = command.Command(
+    ipmicmd = Command(
         bmc=s['ipmi_host'],
         userid=ipmi_username,
         password=ipmi_password,
