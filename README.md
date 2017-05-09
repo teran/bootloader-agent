@@ -42,8 +42,10 @@ Run example
 
 ```
 docker run -it --cap-add NET_ADMIN --network=host \
+  -e AGENT_URL='http://agent01-myloc.example.org' \
   -e API_TOKEN=<bootloader_api_token> \
   -e BOOTLOADER_URL=http://bootloader.example.org/ \
+  -e BROKER_URL='amqp://guest:guest@rabbitmq.example.org:5672//' \
   -e DHCP_NETMASK=255.255.255.0 \
   -e DHCP_RANGE=192.168.0.100,192.168.0.200,3h \
   -e DHCP_ROUTER=192.168.0.254 \
