@@ -22,3 +22,8 @@ class RequiredSettingsTestCase(unittest.TestCase):
 
         self.assertIsInstance(CELERY_SETTINGS, dict)
         self.assertEqual(CELERY_SETTINGS['BROKER_URL'], None)
+
+    def test_api_version(self):
+        from deployments.settings import API_VERSION
+
+        self.assertEqual(API_VERSION, 'v1alpha1')
