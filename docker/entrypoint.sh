@@ -3,11 +3,16 @@
 set -e
 
 [[ -z "${AGENT_URL}" ]] && \
-  echo "No agent URL specified" && exit 1
-[[ -z "${QUEUE}" ]] && \
-  echo "No queue specified" && exit 1
+  echo "No AGENT_URL specified" && exit 1
 [[ -z "${API_TOKEN}" ]] && \
-  echo "No API token specified" && exit 1
+  echo "No API_TOKEN specified" && exit 1
+[[ -z "${BROKER_URL}" ]] && \
+  echo "No BROKER_URL specified" && exit 1
+[[ -z "${BOOTLOADER_URL}" ]] && \
+  echo "No BOOTLOADER_URL specified" && exit 1
+[[ -z "${QUEUE}" ]] && \
+  echo "No QUEUE specified" && exit 1
+
 
 RUN_TFTP=${RUN_TFTP:=false}
 RUN_DHCP=${RUN_DHCP:=false}

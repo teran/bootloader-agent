@@ -17,11 +17,11 @@ Configuration
 
 Currently there's the way to configure the agent via environment variables:
 
- * `AGENT_URL` - url to be passed to deployed server to grab some data, such as
+ * `AGENT_URL` - required, url to be passed to deployed server to grab some data, such as
     download images, files, etc.
- * `API_TOKEN` - bootloader-web API access token, default is `None`
- * `BOOTLOADER_URL` - URL of bootloader-web instance, default is `'http://bootloader:8000/'`
- * `BROKER_URL` - URL of broker for celery, default is `'amqp://guest:guest@rabbitmq:5672//'`
+ * `API_TOKEN` - required, bootloader-web API access token
+ * `BOOTLOADER_URL` - required, URL of bootloader-web instance
+ * `BROKER_URL` - required, URL of broker for celery
  * `DHCP_BOOT_FILENAME` - filename to use for PXE boot. Builtin files are: `pxelinux.0`, `lpxelinux.0` - default
  * `DHCP_NETMASK` - netmask in IP form to serve by DHCP, example: `255.255.255.0`
  * `DHCP_RANGE` - `<range_start>,<range_end>,<lease_duration>` formated string

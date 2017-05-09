@@ -6,7 +6,7 @@ AGENT_URL = os.environ.get('AGENT_URL')
 
 API_TOKEN = os.environ.get('API_TOKEN')
 
-BOOTLOADER_URL = os.environ.get('BOOTLOADER_URL', 'http://bootloader/')
+BOOTLOADER_URL = os.environ.get('BOOTLOADER_URL')
 
 API_VERSION = 'v1alpha1'
 
@@ -16,7 +16,7 @@ CALLBACK_DIR = '/var/lib/bootloader/callback'
 
 CELERY_SETTINGS = {
     'BROKER_URL': os.environ.get(
-        'BROKER_URL', 'amqp://guest:guest@rabbitmq:5672//'),
+        'BROKER_URL'),
     'CELERY_ACCEPT_CONTENT': ['json'],
     'CELERY_CREATE_MISSING_QUEUES': True,
     'CELERY_DEFAULT_QUEUE': USE_QUEUE,
