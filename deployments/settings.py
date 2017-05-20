@@ -8,7 +8,7 @@ API_TOKEN = os.environ.get('API_TOKEN')
 
 BOOTLOADER_URL = os.environ.get('BOOTLOADER_URL')
 
-API_VERSION = 'v1alpha1'
+API_VERSION = 'v1alpha2'
 
 USE_QUEUE = os.environ.get('QUEUE')
 

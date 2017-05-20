@@ -26,4 +26,4 @@ class RequiredSettingsTestCase(unittest.TestCase):
     def test_api_version(self):
         from deployments.settings import API_VERSION
 
-        self.assertEqual(API_VERSION, 'v1alpha1')
+        self.assertEqual(API_VERSION, 'v1alpha2')
